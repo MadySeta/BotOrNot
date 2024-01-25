@@ -1,3 +1,5 @@
+from json import JSONDecodeError
+import json
 import os
 import requests 
 from flask import (Flask, redirect, render_template, request,
@@ -49,7 +51,7 @@ def user():
             else : 
                 return render_template('error.html', name = name)   
 
-       except KeyError as e:
+       except json.JSONDecodeError as e:
             return render_template('error.html', name = name)   
    else:
        print('Request for hello page received with no name or blank name -- redirecting')
@@ -85,7 +87,7 @@ def follower():
                                    botRatio = round(botRatio,4), 
                                    botpercentage = round(botpercentage,4),
                                    humanpercentage = round(humanpercentage,4))
-        except KeyError as e:
+        except json.JSONDecodeError as e:
             return render_template('error.html', name = name) 
    else:
        print('Request for hello page received with no name or blank name -- redirecting')

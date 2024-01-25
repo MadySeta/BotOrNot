@@ -1,21 +1,88 @@
 <!doctype html>
 <head>
-    <title>Hello Azure - Python Quickstart</title>
+    <title>Twitter Account Predictor</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='person.png') }}">
+    <style>
+      @font-face {
+          font-family: 'CustomFont';
+          src: url("{{url_for('static', filename='font/Handmade Notes Regular.otf')}}") format('opentype'),
+               url("{{url_for('static', filename='font/Handmade Notes Regular.ttf')}}") format('truetype');
+      }
+      body{
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #469ae9;
+            font-family: 'CustomFont' sans-serif;
+            color: white;
+      }
+      .bb{
+        background-color: #469ae9;
+        color: white;
+        cursor: pointer;
+        height:50px;
+        width: 300px;
+        border:none;
+        font-size: 40px;
+        font-weight: bold;
+        font-family: 'CustomFont';
+        margin-top: 100px;
+        margin-bottom: 10px;
+        margin-left: 20px;
+        margin-right: 20px;
+      }
+      .bb:hover{
+        
+        background-color: white;
+        color: #469ae9;
+      }
+      .bb:active{
+        opacity: 0.4;
+      }
+      .iconimage {
+            max-width: 100%;
+            width: 800px;
+            height : 420px;
+      }
+      .welcome{
+        font-family: 'CustomFont';
+        font-weight: bolder;
+        font-size: 60px;
+      }
+      #accuracyChart {
+            width: 400px !important;
+            height: 400px !important;
+            align-items: center;
+            margin-left: 220px;
+            font-family: 'CustomFont';
+      }
+      .text{
+        font-family: 'CustomFont';
+        font-size: 30px;
+      }
+    </style>
 </head>
 <html>
    <body>
      <main>
         <div class="px-4 py-3 my-2 text-center">
-            <img class="d-block mx-auto mb-4" src="{{ url_for('static', filename='images/twitter.png') }}" alt="Twitter Logo" width="192" height="192"/>
-            <!-- <img  src="/docs/5.1/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57"> -->
-            <h1 class="display-6 fw-bold">Unfortunately, {{name}} does not exist</h1>
-            <p class="fs-5">
-                Please verify the entered account!
-            </p>
-            <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg px-4 gap-3">Back home</a>
+          <img id="hide" class="iconimage" src="{{ url_for('static', filename='images/Twitter-freefall.gif') }}" alt="Twitter Logo"/>
+            <h1 class="welcome">I do not recognize you ! {{name}}</h1>
+            <p id="verify" class="text"></p>
+            <a id="test" href="{{ url_for('index') }}" class="bb"></a>
           </div>
-     </main>      
+     </main>
+     <script>
+        var verify = document.getElementById('verify');
+        var test = document.getElementById('test');
+        setTimeout(function() {
+          verify.textContent = "Please verify the account id !";
+        }, 15000);
+        setTimeout(function() {
+          test.textContent = "Click here to test again!!";
+        }, 3000);
+     </script>      
    </body>
 </html>

@@ -3,27 +3,153 @@
     <title>Twitter Account Predictor</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='person.png') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      @font-face {
+          font-family: 'CustomFont';
+          src: url("{{url_for('static', filename='font/Handmade Notes Regular.otf')}}") format('opentype'),
+               url("{{url_for('static', filename='font/Handmade Notes Regular.ttf')}}") format('truetype');
+      }
+      body{
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #469ae9;
+            font-family: 'CustomFont' sans-serif;
+            color: white;
+      }
+      .bb{
+        background-color: #469ae9;
+        color: white;
+        cursor: pointer;
+        height:50px;
+        width: 300px;
+        border:none;
+        font-size: 40px;
+        font-weight: bold;
+        font-family: 'CustomFont';
+        margin-top: 100px;
+        margin-bottom: 10px;
+        margin-left: 20px;
+        margin-right: 20px;
+      }
+      .bb:hover{
+        
+        background-color: white;
+        color: #469ae9;
+      }
+      .bb:active{
+        opacity: 0.4;
+      }
+      .iconimage {
+            max-width: 100%;
+            width: 800px;
+            height : 420px;
+      }
+      .welcome{
+        font-family: 'CustomFont';
+        font-weight: bolder;
+        font-size: 60px;
+      }
+      #accuracyChart {
+            width: 400px !important;
+            height: 400px !important;
+            align-items: center;
+            margin-left: 220px;
+            font-family: 'CustomFont';
+      }
+      .text{
+        font-family: 'CustomFont';
+        font-size: 30px;
+      }
+    </style>
 </head>
 <html>
    <body>
      <main>
         <div class="px-4 py-3 my-2 text-center">
-          <img class="d-block mx-auto mb-4" src="{{ url_for('static', filename='images/twitter.png') }}" alt="Twitter Logo" width="192" height="192"/>
+          <img id="hide" class="iconimage" src="{{ url_for('static', filename='images/Twitter-freefall.gif') }}" alt="Twitter Logo"/>
             <!-- <img  src="/docs/5.1/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57"> -->
-            <h1 class="display-6 fw-bold">Hello {{name}}</h1>
-            <p class="fs-5">
-                It is nice to meet you!
-            </p>
-            <p class="fs-6">
-              Your account is: {{ prediction}}<br>
-                {% if prediction == 'human' %}
-                    with {{ trust_human * 100 }}% accuracy.
-                {% elif prediction == 'bot' %}
-                    with {{ trust_bot * 100 }}% accuracy.
-                {% endif %}
-            </p>
-            <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg px-4 gap-3">Back home</a>
+            <h1 class="welcome">Hello {{name}} ! It is nice to meet you!</h1>
+            <p id="accountInfo" class="text">Your account is: <span id="predictionResult"></span></p>
+            <p id="predictInfo" class="text"></p>
+            <canvas id="accuracyChart"></canvas>
+            <a id="test" href="{{ url_for('index') }}" class="bb"></a>
           </div>
-     </main>      
+     </main> 
+     <script>
+      // Get the reference to the image element
+      var myImage = document.getElementById('hide');
+      var prediction = "{{ prediction }}";
+      var trust_human = {{ trust_human }};
+      var trust_bot = {{ trust_bot }};
+      var accountInfo = document.getElementById('accountInfo');
+      var predictionResult = document.getElementById('predictionResult');
+      var predictInfo = document.getElementById('predictInfo');
+      var test = document.getElementById('test');
+
+        if (prediction === 'human' && trust_human >= 0.7) {
+            setTimeout(function() {
+              predictionResult.textContent = prediction + "!!";
+              predictionResult.style.color = 'lightgreen';
+            }, 3000); 
+            setTimeout(function() {
+              predictInfo.textContent += ' with ' + (trust_human * 100) + '% accuracy.';
+            }, 4000); 
+            document.getElementById('accuracyChart').style.display = 'none';
+            setTimeout(function() {
+              myImage.src = "{{ url_for('static', filename='images/humanhello.gif') }}";
+            }, 3000);
+        } else if (prediction === 'bot' && trust_bot >= 0.7) {
+            setTimeout(function() {
+              predictionResult.textContent = prediction + "!!";
+              predictionResult.style.color = 'red';
+            }, 3000); 
+            setTimeout(function() {
+              predictInfo.textContent += ' with ' + (trust_bot * 100) + '% accuracy.';
+            }, 4000); 
+            document.getElementById('accuracyChart').style.display = 'none';
+            setTimeout(function() {
+              myImage.src = "{{ url_for('static', filename='images/botsorry.gif') }}";
+            }, 3000); 
+        }else{
+            setTimeout(function() {
+              predictionResult.textContent = "I cannot define!!";
+              predictionResult.style.color = 'grey';
+            }, 3000); 
+            setTimeout(function() {
+              predictInfo.textContent += ' You are made of' + (trust_bot * 100) + '% of bot and '+ (trust_human * 100)+'% of human.';
+            }, 4000); 
+            setTimeout(function() {
+            // Get the canvas element
+            var ctx = document.getElementById('accuracyChart').getContext('2d');
+
+            // Create the pie chart
+            var accuracyChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Human', 'Bot'],
+                    datasets: [{
+                        data: [trust_human * 100, trust_bot * 100],
+                        backgroundColor: ['lightgreen', 'red'],
+                    }]
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: 'Accuracy Chart',
+                    },
+                }
+            });
+        }, 4000); 
+            setTimeout(function() {
+              myImage.src = "{{ url_for('static', filename='images/confuse.gif') }}";
+            }, 3000);
+        }
+        setTimeout(function() {
+              test.textContent = "Click here to test again!!";
+        }, 5500);
+  </script>    
    </body>
 </html>
