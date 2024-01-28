@@ -93,7 +93,7 @@
         var humanpercentage = {{ humanpercentage }}
         var botpercentage = {{ botpercentage }}
         setTimeout(function() {
-              predictionResult.textContent = botRatio*100 + "% of bot followers!!";
+              predictionResult.textContent = (botRatio*100).toFixed(2) + "% of bot followers!!";
               if(botRatio >0.5){
                 predictionResult.style.color = 'red';
                 myImage.src = "{{ url_for('static', filename='images/botfollower.gif') }}";
@@ -103,7 +103,7 @@
               }
             }, 2000); 
         setTimeout(function() {
-              predictInfo.textContent = 'So you have ' + ((1-botRatio) * 100) + '% of human followers.';
+              predictInfo.textContent = 'So you have ' + ((1-botRatio) * 100).toFixed(2) + '% of human followers.';
             }, 3000); 
         setTimeout(function() {
               humanInfo.textContent = 'For all the human followers, the average accuracy is : ' + ((humanpercentage) * 100).toFixed(2) + '% .';
