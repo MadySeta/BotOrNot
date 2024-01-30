@@ -90,6 +90,8 @@
         var humanInfo = document.getElementById('humanInfo');
         var botInfo = document.getElementById('botInfo');
         var botRatio = {{ botRatio }}
+        var humanRatio = {{ humanRatio }}
+        var undefined = 1-botRatio-humanRatio
         var humanpercentage = {{ humanpercentage }}
         var botpercentage = {{ botpercentage }}
         setTimeout(function() {
@@ -97,13 +99,16 @@
               if(botRatio >0.5){
                 predictionResult.style.color = 'red';
                 myImage.src = "{{ url_for('static', filename='images/botfollower.gif') }}";
-              }else{
+              }else if (humanRatio >0.5){
                 predictionResult.style.color = 'lightgreen';
                 myImage.src = "{{ url_for('static', filename='images/humanfollower.gif') }}";
+              }else{
+                predictionResult.style.color = 'white';
+                myImage.src = "{{ url_for('static', filename='images/confuse.gif') }}";
               }
             }, 2000); 
         setTimeout(function() {
-              predictInfo.textContent = 'So you have ' + ((1-botRatio) * 100).toFixed(2) + '% of human followers.';
+              predictInfo.textContent = 'So you have ' + (humanRatio * 100).toFixed(2) + '% of human followers.';
             }, 3000); 
         setTimeout(function() {
               humanInfo.textContent = 'For all the human followers, the average accuracy is : ' + ((humanpercentage) * 100).toFixed(2) + '% .';
@@ -121,8 +126,8 @@
                 data: {
                     labels: ['Human', 'Bot'],
                     datasets: [{
-                        data: [(1-botRatio) * 100, botRatio * 100],
-                        backgroundColor: ['lightgreen', 'red'],
+                        data: [humanRatio * 100, botRatio * 100, (1-botRatio-humanRatio) *100],
+                        backgroundColor: ['lightgreen', 'red', 'grey'],
                     }]
                 },
                 options: {
