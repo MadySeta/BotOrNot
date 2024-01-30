@@ -76,14 +76,14 @@ def follower():
 
             botRatio = compute.BotRatio(predictions)
             humanRatio = compute.HumanRatio(predictions)
-            botpercentage, humanpercentage = compute.FollowersBotHumanPercentage(humanprobabilities, botprobabilities)
+            undefinedRatio = compute.UndefinedRatio(predictions)
+            
 
             return render_template('follower.html', 
                                    name = name, 
                                    botRatio = round(botRatio,4), 
                                    humanRatio = round(humanRatio,4),
-                                   botpercentage = round(botpercentage,4),
-                                   humanpercentage = round(humanpercentage,4))
+                                   undefinedRatio = round(undefinedRatio,4))
         except json.JSONDecodeError as e:
             return render_template('error.html', name = name) 
    else:

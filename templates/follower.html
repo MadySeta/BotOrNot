@@ -56,7 +56,7 @@
             width: 400px !important;
             height: 400px !important;
             align-items: center;
-            margin-left: 220px;
+            margin-left: 250px;
             font-family: 'CustomFont';
       }
       .text{
@@ -76,8 +76,7 @@
             </p>
             <p id="accountInfo" class="text">In your followers, you have: <span id="predictionResult"></span></p>
             <p id="predictInfo" class="text"></p>
-            <p id="humanInfo" class="text" style="color: lightgreen;"></p>
-            <p id="botInfo" class="text" style="color: red;"></p>
+            
             <canvas id="botChart"></canvas>
             <a id="test" href="{{ url_for('index') }}" class="bb"></a>
           </div>
@@ -87,13 +86,12 @@
         var accountInfo = document.getElementById('accountInfo');
         var predictionResult = document.getElementById('predictionResult');
         var predictInfo = document.getElementById('predictInfo');
-        var humanInfo = document.getElementById('humanInfo');
-        var botInfo = document.getElementById('botInfo');
-        var botRatio = {{ botRatio }}
-        var humanRatio = {{ humanRatio }}
-        var undefined = 1-botRatio-humanRatio
-        var humanpercentage = {{ humanpercentage }}
-        var botpercentage = {{ botpercentage }}
+        
+        var botRatio = {{ botRatio }};
+        var humanRatio = {{ humanRatio }};
+        var undefinedRatio ={{ undefinedRatio }} ;
+
+        var test = document.getElementById('test');
         setTimeout(function() {
               predictionResult.textContent = (botRatio*100).toFixed(2) + "% of bot followers, and " + (humanRatio * 100).toFixed(2) + '% of human followers.';
               if(botRatio >0.5){
@@ -108,9 +106,8 @@
               }
             }, 2000); 
         setTimeout(function() {
-              predictInfo.textContent = 'For the rest ' + (undefined*100)).toFixed(2) + "% of followers I cannot define them!";
+              predictInfo.textContent = "For the rest " + (undefinedRatio*100).toFixed(2) + "% of followers I cannot define them!";
             }, 3000); 
-         
         setTimeout(function() {
             // Get the canvas element
             var ctx = document.getElementById('botChart').getContext('2d');
@@ -121,7 +118,7 @@
                 data: {
                     labels: ['Human', 'Bot', 'Undefined'],
                     datasets: [{
-                        data: [humanRatio * 100, botRatio * 100, undefined *100],
+                        data: [humanRatio * 100, botRatio * 100, undefinedRatio*100],
                         backgroundColor: ['lightgreen', 'red', 'grey'],
                     }]
                 },
@@ -132,10 +129,10 @@
                     },
                 }
             });
-        }, 6000); 
+        }, 4000); 
         setTimeout(function() {
               test.textContent = "Click here to test again!!";
-        }, 7000);
+        }, 5500);
      </script>      
    </body>
 </html>
