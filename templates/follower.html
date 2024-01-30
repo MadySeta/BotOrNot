@@ -95,7 +95,7 @@
         var humanpercentage = {{ humanpercentage }}
         var botpercentage = {{ botpercentage }}
         setTimeout(function() {
-              predictionResult.textContent = (botRatio*100).toFixed(2) + "% of bot followers!!";
+              predictionResult.textContent = (botRatio*100).toFixed(2) + "% of bot followers, and " + (humanRatio * 100).toFixed(2) + '% of human followers.';
               if(botRatio >0.5){
                 predictionResult.style.color = 'red';
                 myImage.src = "{{ url_for('static', filename='images/botfollower.gif') }}";
@@ -104,18 +104,13 @@
                 myImage.src = "{{ url_for('static', filename='images/humanfollower.gif') }}";
               }else{
                 predictionResult.style.color = 'white';
-                myImage.src = "{{ url_for('static', filename='images/confuse.gif') }}";
+                myImage.src = "{{ url_for('static', filename='images/confusefollower.gif') }}";
               }
             }, 2000); 
         setTimeout(function() {
-              predictInfo.textContent = 'So you have ' + (humanRatio * 100).toFixed(2) + '% of human followers.';
+              predictInfo.textContent = 'For the rest ' + (undefined*100)).toFixed(2) + "% of followers I cannot define them!";
             }, 3000); 
-        setTimeout(function() {
-              humanInfo.textContent = 'For all the human followers, the average accuracy is : ' + ((humanpercentage) * 100).toFixed(2) + '% .';
-            }, 4500); 
-        setTimeout(function() {
-              botInfo.textContent = 'For all the bot followers, the average accuracy is : ' + ((botpercentage) * 100).toFixed(2) + '% .';
-            }, 5500); 
+         
         setTimeout(function() {
             // Get the canvas element
             var ctx = document.getElementById('botChart').getContext('2d');
@@ -124,9 +119,9 @@
             var accuracyChart = new Chart(ctx, {
                 type: 'pie',
                 data: {
-                    labels: ['Human', 'Bot'],
+                    labels: ['Human', 'Bot', 'Undefined'],
                     datasets: [{
-                        data: [humanRatio * 100, botRatio * 100, (1-botRatio-humanRatio) *100],
+                        data: [humanRatio * 100, botRatio * 100, undefined *100],
                         backgroundColor: ['lightgreen', 'red', 'grey'],
                     }]
                 },
